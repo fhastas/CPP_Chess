@@ -5,19 +5,21 @@ commit 으로 넣을 메모에는 최소한 어떤 것을 추가했는지 수정
 만약 메모를 하지 않고 commit을 한다면 나중에 버그가 생겼을 때 어떤 것 때문에 생긴 것인지 알기 힘들게 되버립니다.
 
 저희는 지금 commit 메세지를 매우 간략하게 적고 있지만 되도록이면
-https://url.kr/igfakd 를 참고하여 적는 것이 나중에도 도움이 될 것입니다.
+[이 블로그](https://url.kr/igfakd) 를 참고하여 적는 것이 나중에도 도움이 될 것입니다.
 
 
 ## git push는 위험한 명령어입니다!
 우리가 나중에 명령어를 통해
-git add *
-git commit -m "메모"
-git push
+
+    git add *
+    git commit -m "메모"
+    git push
+    
 를 많이 하게 될텐데 여기서 "git add * " 때문에 "git push"를 하는 것이 위험해집니다.
-설명을 하자면 git add * 는 *"수정된 모든 파일들*"을 저장을 하기 위해 준비를 하겠다는 겁니다.
+설명을 하자면 git add * 는 "**수정된 모든 파일들**"을 저장을 하기 위해 준비를 하겠다는 겁니다.
 
 솔직히 수정된 파일 하나 하나 추가하는 것은 번거롭고 귀찮기 때문에 저렇게 하는 것인데
-여기서 git push는 로컬 파일들의 *"모든 브랜치들*"의 수정된 것을 원격 저장소에 넣겠다는 겁니다. 
+여기서 git push는 로컬 파일들의 "**모든 브랜치들**"의 수정된 것을 원격 저장소에 넣겠다는 겁니다. 
 당연히 모든 브랜치들을 건들게 될 수 있으므로 일이 꼬이고 버그가 발생할 확률이 커지게 되는 것입니다.
 
 그래서 git push 대신에 git push <원격저장소 이름> <branch 이름> 를 사용하여
@@ -26,4 +28,4 @@ git push
 만약 자신이 관리하는 branch가 여러 개가 아닌 하나 뿐이라면
 git push -u <원격저장소 이름> <branch 이름>를 사용하여 이후에 git push만을 사용해도 해당 branch만 건들게 할 수 있습니다.
 
-ex) git push origin main  or  git push -u origin main   (저희의 원격저장소 이름은 초기값인 origin입니다)
+* git push origin main (저희의 원격저장소 이름은 초기값인 origin입니다) <br/> or <br/> git push -u origin main
