@@ -11,7 +11,7 @@ private:
 	bool Exist;//기물의 유무
 	bool Border;//칸의 경계선
 
-	string ChessPiece;//기물 이름
+	string ChessPiece;//기물 이름		W or B P(폰), R(룩), B(비숍), N(나이트), Q(퀸), K(킹) 
 	string Code;//체스판에 표시되는 기물의 이름
 	int MoveCount;//기물이 움직인 횟수
 public:
@@ -56,20 +56,54 @@ int main()
 
 	while (1)
 	{
-		if (Paddress % 2 == 0)//하얀 기물
+		if (Paddress <= 16)//검은 기물
 		{
 			switch (Paddress)
 				case (1):
 					p->tempcode = "BR";
 					break;
 				case (2):
-					p
+					p->tempcode = "BN";
+					break;
+				case (3):
+					p->tempcode = "BB";
+					break;
+				case (4):
+					p->tempcode = "BN";
+					break;
+				case (5):
+					p->tempcode = "BR";
+					break;
+				case (6):
+					p->tempcode = "BN";
+					break;
+				case (7):
+					p->tempcode = "BR";
+					break;
+				case (8):
+					p->tempcode = "BN";
+					break;
+				case (9):
+				case (10):
+				case (11):
+				case (12):
+				case (13):
+				case (14):
+				case (15):
+				case (16):
+					p->tempcode = "BP";
+					break;
+
+		}
+		else if (Paddress >= 48)	//하얀 기물 
+		{
+
 		}
 			
 		p->tempcode2 = 3;
-		p++;
-		Paddress++;
-		if (Paddress % 2 != 0)//검은 기물
+
+		p++;			// 다음 칸의 주소로 이동
+		Paddress++;		// 현재 칸의 값 증가
 			
 	}
 	
