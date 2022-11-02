@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{02a27c4d-8555-4ff2-80a0-9aae89c5a88a}</ProjectGuid>
+    <ProjectGuid>{bdcfcc37-0564-4710-b235-cb8435d26fd2}</ProjectGuid>
     <RootNamespace>Chess</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -127,11 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ChessBoard.cpp" />
-    <ClCompile Include="source.cpp" />
+    <ClInclude Include="Chess.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChessBoard.h" />
+    <ClCompile Include="board.cpp" />
+    <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="play.cpp" />
+    <ClCompile Include="print.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
