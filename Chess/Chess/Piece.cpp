@@ -1,23 +1,23 @@
 #include "Chess.h"
 
-void Piece::changeCode(Piece* p, string code) {
-	p->pieceCode = code;
+void Piece::changeCode(string code) {
+	this->pieceCode = code;
 	return;
 }
 
-void Piece::changeMoveCount(Piece* p, int mc) {
-	if (mc == 0) {
-		p->moveCount = mc;
+void Piece::changeMoveCount(int mc) {
+	if (mc == 0) {			// 넣을 값이 0이라면 moveCount 값을 0으로 변경
+		this->moveCount = mc;
 		return;
 	}
-	p->moveCount += mc;
+	this->moveCount += mc;	// 아니라면 넣을 값을 원래 값에 추가
 	return;
 }
 
-string Piece::showCode(Piece* p) {
-	return p->pieceCode;
+string Piece::showCode() {
+	return this->pieceCode;
 }
 
-int Piece::showMoveCount(Piece* p) {
-	return p->moveCount;
+int Piece::showMoveCount() {
+	return this->moveCount;
 }
