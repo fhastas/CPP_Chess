@@ -18,9 +18,6 @@
     <ClCompile Include="Chess.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Piece.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="print.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -30,7 +27,7 @@
     <ClCompile Include="Queue.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="promotion.cpp">
+    <ClCompile Include="RangeCheck.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

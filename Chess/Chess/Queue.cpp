@@ -24,7 +24,7 @@ void Recode::enqueue(string recode) {
 	len++;
 }
 string Recode::dequeue() {
-	string null;
+	string null = "0";
 	if (isEmpty()) {
 		cout << "큐가 비어있습니다!" << endl;
 		Sleep(1000);

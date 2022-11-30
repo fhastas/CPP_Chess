@@ -127,11 +127,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="RangeCheck.cpp" />
     <ClCompile Include="Chess.cpp" />
-    <ClCompile Include="Piece.cpp" />
     <ClCompile Include="play.cpp" />
     <ClCompile Include="print.cpp" />
-    <ClCompile Include="promotion.cpp" />
     <ClCompile Include="Queue.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,30 @@
+#include <iostream>
 #include <algorithm>
 #include "Chess.h"
 #include "Queue.h"
+using namespace std;
+
+void Piece::changeCode(string code) {
+	this->pieceCode = code;
+	return;
+}
+
+void Piece::changeMoveCount(bool mc) {
+	if (mc == 0) {			// 넣을 값이 0이라면 moveCount 값을 0으로 변경
+		this->moveCount = mc;
+		return;
+	}
+	this->moveCount += mc;	// 아니라면 넣을 값을 원래 값에 추가
+	return;
+}
+
+string Piece::showCode() {
+	return this->pieceCode;
+}
+
+bool Piece::showMoveCount() {
+	return this->moveCount;
+}
 
 void Chess::insertCellName(string na) {
 	this->CellName = na;
@@ -18,8 +42,44 @@ void Chess::insertExist(bool ex) {
 	this->Exist = ex;
 	return;
 }
-void Chess::insertBoarder(bool bo) {
-	this->Border = bo;
+void Chess::insertWBoarder(bool bo) {
+	this->WBorder = bo;
+	return;
+}
+void Chess::insertEBoarder(bool bo) {
+	this->EBorder = bo;
+	return;
+}
+void Chess::insertNBoarder(bool bo) {
+	this->NBorder = bo;
+	return;
+}
+void Chess::insertSBoarder(bool bo) {
+	this->SBorder = bo;
+	return;
+}
+void Chess::insertResRook(bool r) {
+	this->resRook = r;
+	return;
+}
+void Chess::insertResBishop(bool r) {
+	this->resBishop = r;
+	return;
+}
+void Chess::insertResKnight(bool r) {
+	this->resKnight = r;
+	return;
+}
+void Chess::insertResQueen(bool r) {
+	this->resQueen = r;
+	return;
+}
+void Chess::insertResKing(bool r) {
+	this->resKing = r;
+	return;
+}
+void Chess::insertResPawn(bool r) {
+	this->resPawn = r;
 	return;
 }
 
@@ -32,9 +92,40 @@ string Chess::showColor() {
 bool Chess::showExist() {
 	return this->Exist;
 }
-bool Chess::showBorder() {
-	return this->Border;
+bool Chess::showEBorder() {
+	return this->EBorder;
 }
+bool Chess::showWBorder() {
+	return this->WBorder;
+}
+bool Chess::showSBorder() {
+	return this->SBorder;
+}
+bool Chess::showNBorder() {
+	return this->NBorder;
+}
+bool Chess::showCellNum() {
+	return this->CellNum;
+}
+bool Chess::showResRook() {
+	return this->resRook;
+}
+bool Chess::showResBishop() {
+	return this->resBishop;
+}
+bool Chess::showResKnight() {
+	return this->resKnight;
+}
+bool Chess::showResQueen() {
+	return this->resQueen;
+}
+bool Chess::showResKing() {
+	return this->resKing;
+}
+bool Chess::showResPawn() {
+	return this->resPawn;
+}
+
 
 void Chess::initData(Chess* p) {
 	int i, j, lineNum = 1;							// i, j : for문 , lineNum : 열 숫자
@@ -57,11 +148,11 @@ void Chess::initData(Chess* p) {
 				p->piece->changeMoveCount(0);
 				break;
 			case (4):
-				p->piece->changeCode("WQ");
+				p->piece->changeCode("WK");
 				p->piece->changeMoveCount(0);
 				break;
 			case (5):
-				p->piece->changeCode("WK");
+				p->piece->changeCode("WQ");
 				p->piece->changeMoveCount(0);
 				break;
 			case (6):
@@ -128,11 +219,11 @@ void Chess::initData(Chess* p) {
 				p->piece->changeMoveCount(0);
 				break;
 			case (60):
-				p->piece->changeCode("BQ");
+				p->piece->changeCode("BK");
 				p->piece->changeMoveCount(0);
 				break;
 			case (61):
-				p->piece->changeCode("BK");
+				p->piece->changeCode("BQ");
 				p->piece->changeMoveCount(0);
 				break;
 			case (62):
@@ -201,10 +292,18 @@ void Chess::initData(Chess* p) {
 		}
 
 		// Boarder
-		if ((i <= 8) or (i >= 57) or ((i % 8) == 0) or ((i % 8) == 1)) {
-			p->insertBoarder(true);
+		if (i % 8 == 1) {
+			p->insertEBoarder(true);
 		}
-
+		if (i % 8 == 0) {
+			p->insertWBoarder(true);
+		}
+		if (i <= 8) {
+			p->insertSBoarder(true);
+		}
+		if (i >= 57) {
+			p->insertNBoarder(true);
+		}
 		if ((i % 8) == 0) {	// 줄이 바뀔 때마다
 			lineNum++;			// 숫자 증가
 			cnNum[0]++;			// 1->2, 2->3, ...
@@ -217,7 +316,20 @@ void Chess::initData(Chess* p) {
 	return;
 }
 
-bool Chess::checkInput(Chess cell[], char secPiece[], char secCell[]) {
+void Chess::initResData(Chess* p) {
+	for (int i = 0; i < 64; i++) {
+		p->insertResPawn(false);
+		p->insertResRook(false);
+		p->insertResBishop(false);
+		p->insertResKnight(false);
+		p->insertResQueen(false);
+		p->insertResKing(false);
+		p++;
+	}
+	return;
+}
+
+bool Chess::checkInput(Chess cell[], char secPiece[], char secCell[], int color) {
 	char* fInput, * sInput;
 	int i, j;
 
@@ -232,9 +344,10 @@ bool Chess::checkInput(Chess cell[], char secPiece[], char secCell[]) {
 			*sInput = toupper(secCell[i]);
 		}
 
-		code += secPiece[i];		// 변환된 글자를 code에 추가
-		if(i < 2)					// string에 쓰래기 값 추가 방지
-			cellName += secCell[i];		//		``		 cellName에 추가
+		if (secPiece[i] != NULL)		// string에 쓰래기 값 추가 방지
+			code += secPiece[i];			// 변환된 글자를 code에 추가
+		if (secCell[i] != NULL)			// string에 쓰래기 값 추가 방지
+			cellName += secCell[i];			// cellName에 추가
 
 		fInput++;					// 다음 글자로 이동
 		sInput++;					//		``
@@ -244,18 +357,24 @@ bool Chess::checkInput(Chess cell[], char secPiece[], char secCell[]) {
 	for (j = 0; j < 64; j++) {		// 칸에 있는 값인지 확인
 		if (code.compare(cell[j].piece->showCode()) == 0)
 			check++;
-		else if (code.compare(cell[j].showCellName()) == 0)
-			check++;
-
 		if (cellName.compare(cell[j].showCellName()) == 0)
 			check++;
 
-		if (check == 2)
+		if (check == 2)	// 맞는 색깔인지 확인하기 위해 3으로 수정할 필요 있음
 			break;
 	}
-	if (check == 2)		// 입력한 값이 전부 유효한 값이라면 (원본은 check == 2, 임시로 1로 변경되어있음)
-		return true;		// true 반환
 
+	if ((color == 0) && (code[0] == 'W')) {			// 턴에 움직일 수 있는 색깔인지 확인
+		check++;
+	}
+	else if ((color == 1) && (code[0] == 'B')) {
+		check++;
+	}
+
+	if (check == 3) {		// 입력한 값이 전부 유효한 값이라면
+		cell->RangeCheck(cell, secPiece);		// 입력한 기물의 이동 통제 데이터 설정
+		return possibleMove(cell, secCell, secPiece); 	// possibleMove의 반환값 반환
+	}
 	return false;			// 아니라면 false 반환
 }
 
@@ -265,6 +384,8 @@ bool Chess::swapData(Chess* p1, Chess* p2) {
 		p2->Exist = false;							// false로 변경
 		eat = true;									// eat true로 변경
 	}
+	p1->piece->changeMoveCount(true);
+	p2->piece->changeMoveCount(true);
 	swap(p1->Exist, p2->Exist);	// p1 <-> p2 Exist 데이터 스왑
 	swap(p1->piece, p2->piece);	//			 piece 주소 스왑
 	return eat;					// 기물을 먹었는지 안먹었는지 bool 값을 반환
@@ -279,10 +400,6 @@ string Chess::movePiece(Chess cell[], string name, string cellname) {
 		if (name == cell[i].piece->showCode()) {	// pieceCode가 같다면
 			movingPiece = i;							// 해당 index값 movingPiece에 넣기
 		}
-		else if (name == cell[i].CellName) {		// cellName가 같다면
-			movingPiece = i;							// 해당 index값을 movingPiece에 넣기
-		}
-
 		if (cellname == cell[i].CellName) {			// cellName가 같다면
 			placeToMove = i;							// 해당 index값을 placeToMove에 넣기
 		}
@@ -304,4 +421,83 @@ string Chess::movePiece(Chess cell[], string name, string cellname) {
 	result += tolower(cell[placeToMove].CellName[0]);		// 움직인 칸의 이름를 소문자로 변환후 추가
 	result += cell[placeToMove].CellName[1];				// 그 뒤 글자도 추가
 	return result;											// 해당 턴의 기보 결과 반환
+}
+
+int Chess::kingCheck(Chess* p) {
+	for (int i = 0; i < 64; i++) {
+		if (p->showExist()) {
+			if (p->piece->showCode()[1] == 'K') {
+				if (p->resPawn || p->resRook || p->resBishop || p->resKnight || p->resQueen || p->resKing) {
+					if (p->piece->showCode()[0] == 'W')
+						return 1;
+					if (p->piece->showCode()[0] == 'B')
+						return 2;
+				}
+			}
+		}
+		p++;
+	}
+	return 0;
+}
+
+void Chess::promotion(Chess* p) {
+	char what;
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 8; j++) {
+			if (p->Exist == true) {					// 탐색한 칸에 기물이 존재하는데
+				if (p->piece->showCode()[1] == 'P') {	// 그 기물이 폰이라면
+					cout << "여왕 : 1 / 룩 : 2 / 비숍 : 3 / 나이트 : 4" << endl;
+					cout << "폰을 어떤 기물로 승급시키시겠습니까? : ";
+					cin >> what;
+					if (p->piece->showCode()[0] == 'W') {		// 흰색이라면
+						switch (what)
+						{
+						case 49:
+							p->piece->changeCode("WQP");
+							break;
+						case 50:
+							p->piece->changeCode("WRP");
+							break;
+						case 51:
+							p->piece->changeCode("WBP");
+							break;
+						case 52:
+							p->piece->changeCode("WNP");
+							break;
+						default:
+							cout << "잘못된 입력입니다!";
+
+						}
+					}
+					else if (p->piece->showCode()[0] == 'B') {	// 검은색이라면
+						switch (what)
+						{
+						case 49:
+							p->piece->changeCode("BQP");
+							break;
+						case 50:
+							p->piece->changeCode("BRP");
+							break;
+						case 51:
+							p->piece->changeCode("BBP");
+							break;
+						case 52:
+							p->piece->changeCode("BNP");
+							break;
+						default:
+							cout << "잘못된 입력입니다!";
+
+						}
+					}
+				}
+			}
+			p++;
+		}
+		if (i == 0)						// 처음한 반복이라면 
+			p += 48;
+		//for (int k = 0; k < 48; k++)	// 48칸 앞으로 이동
+		//	p++;
+	}
+
+	return;
 }

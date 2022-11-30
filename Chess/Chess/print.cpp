@@ -30,10 +30,6 @@ void printBoard(Chess* p) {
 	char row = 'A', col = '8';
 	for (j = 0; j < 63; j++)				// 끝으로 이동 p[63]
 		p++;
-	for (k = 0; k < 8; k++) {				// A ~ H 출력
-		cout << "      " << row << " ";
-		row++;
-	}
 	cout << endl;
 	cout << "  ┌───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┐" << endl;
 	for (i = 1; i < 9; i++) {
@@ -66,6 +62,11 @@ void printBoard(Chess* p) {
 			if (j == 7) {						// 마지막 행일 경우 그리고
 				if (p->showExist()) {				// 말이 존재할 경우
 					cout << p->piece->showCode();		// Code 출력
+													// 출력된 말이 킹 또는 퀸일 경우
+					if ((p->piece->showCode()[1] == 'K') || (p->piece->showCode())[1] == 'Q') {
+						if (p->piece->showCode()[2] == NULL)
+							cout << " ";				// 한 칸 더 띄우기
+					}
 				}
 				else {								// 아닐 경우
 					cout << p->showColor();				// Color 출력
@@ -89,6 +90,12 @@ void printBoard(Chess* p) {
 	}
 	cout << "  └───────┴───────┴───────┴───────┴───────┴───────┴───────┴───────┘" << endl;
 
+	for (k = 0; k < 8; k++) {				// A ~ H 출력
+		cout << "      " << row << " ";
+		row++;
+	}
+	cout << endl;
+
 	return;
 }
 
@@ -104,6 +111,6 @@ void printMenu() {
 
 void printInfo(Chess cell[], int index) {
 	cout << cell[index].showCellName() << endl;
-	cout << cell[index].piece->showCode() << endl;
+	cout << cell[index].showWBorder() << endl;
 	return;
 }

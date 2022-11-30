@@ -11,13 +11,14 @@ int main() {
 		cell[i].piece = new Piece;
 	}
 	Chess* Chess = cell;		// p->cell, cell[index]->Piece
-	Recode* rq = new Recode;
+	Recode* rq = new Recode;	// Queue
 	
-	int index, end = 1;
+	int end = 1, loser = 0;
 	char start;
 
-	Chess->initData(Chess);
+	
 	while (true) {
+		Chess->initData(Chess);
 		system("cls");
 		if (end == 0) {
 			end = 1;
@@ -27,16 +28,33 @@ int main() {
 			}
 			cout << endl;
 		}
+		if (loser > 0) {
+			if (loser == 1)
+				cout << "검은색의 승리";
+			if (loser == 2)
+				cout << "흰 색의 승리";
+			cout << endl;
+			loser = 0;
+		}
+
 		printMenu();
 		cin >> start;
 
 		if (start == 49) {
-			int turn = 1;
+			int turn = 1, check = 0;
+			//int index;
 			char sec, secPiece[4], secCell[4];
 			while (end) {
-				for (i = 0; i < 2; i++) {	// 한 수(턴)
+				for (int i = 0; i < 2; i++) {	// 한 수(턴)
 					system("cls");
 					printBoard(Chess);
+					if (check > 0) {		// 체크 확인
+						if (check == 1)			// 흰색 체크라면
+							cout << "흰색 킹";
+						if (check == 2)			// 검은색 체크라면
+							cout << "검은색 킹";
+						cout << " 체크" << endl;
+					}
 					cout << "1: 말 이동 2: 체스 설명 0: 종료(기권)\n>>";
 					cin >> sec;
 					switch (sec)
@@ -47,21 +65,27 @@ int main() {
 						else
 							cout << "(백)";
 						cout << "움직일 말과 이동할 칸을 선택해주세요." << "\n"
-							<< "(ex)>>(WP6 or C2) C3 >>";
+							<< "(ex >> WP6 C3 ) >> ";
 
-						cin >> secPiece >> secCell;
+						cin >> secPiece;	//움직일 기물 선택
+						cin >> secCell;		//목적지
 
-						if (Chess->checkInput(Chess, secPiece, secCell)) {
+						if (Chess->checkInput(Chess, secPiece, secCell, i)) {
 							string tmp;
 							tmp += (char)(turn + 48);
-							tmp += Chess->movePiece(cell, secPiece, secCell);
-							rq->enqueue(tmp);
+							tmp += Chess->movePiece(cell, secPiece, secCell);	// 기물 이동
+							rq->enqueue(tmp);						// 이번 턴의 기보값 저장
 
-							Chess->promotion(Chess);
+							Chess->promotion(Chess);				// 폰의 승급
+
+							Chess->RangeCheck(Chess, secPiece);			// 체크 전 움직인 기물에 대한 이동 경로 조사
+							check = Chess->kingCheck(Chess);			// 체크 확인후 check 변수에 반환값 저장		// check == 1 (흰색), check == 2 (검은색)
+							Chess->initResData(Chess);					// Res데이터 기초값 설정
 						}
 						else {
 							cout << "잘못된 입력입니다. 다시 입력해주세요." << endl;
 							Sleep(1000);
+							i--;
 							continue;
 						}
 						break;
@@ -69,6 +93,7 @@ int main() {
 						cout << "체스 설명 칸\n";
 						break;
 					case 48:
+						loser += i + 1;
 						end = 0;
 						break;
 					default:

@@ -1,2 +1,5 @@
 ﻿  Chess.cpp
-  Chess.vcxproj -> C:\Users\guswl\Desktop\Personal\Programing\CodingSouce\C++\Chess\x64\Debug\Chess.exe
+C:\Users\guswl\Desktop\Personal\Programing\CodingSouce\C++\Chess-Pre5\Chess\Chess\Chess.cpp(17,6): warning C4804: '+=': 연산에 'bool' 형식을 사용하는 것은 안전하지 않습니다.
+  play.cpp
+  코드를 생성하고 있습니다...
+  Chess.vcxproj -> C:\Users\guswl\Desktop\Personal\Programing\CodingSouce\C++\Chess-Pre5\Chess\x64\Debug\Chess.exe
